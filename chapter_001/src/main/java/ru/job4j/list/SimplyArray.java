@@ -23,13 +23,15 @@ public class SimplyArray<T> implements Iterable<T> {
     }
 
     public void add(T model) {
-        if (index == capacity) {
-            container = Arrays.copyOf(container, capacity*2);
+        if (index >= capacity) {
+            capacity = capacity * 2;
+            container = Arrays.copyOf(container, capacity);
+            container[index++] = model;
+            modCount++;
+        } else {
             container[index++] = model;
             modCount++;
         }
-        container[index] = model;
-        modCount++;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class SimplyArray<T> implements Iterable<T> {
         return new Iterator<T>() {
             private int expectedModCount = modCount;
             private int index = 0;
+
             @Override
             public boolean hasNext() {
                 return container.length > index;
@@ -45,7 +48,7 @@ public class SimplyArray<T> implements Iterable<T> {
 
             @Override
             public T next() {
-                if (!hasNext() || container[index] == null){
+                if (!hasNext() || container[index] == null) {
                     throw new NoSuchElementException();
                 }
                 if (expectedModCount != modCount) {
