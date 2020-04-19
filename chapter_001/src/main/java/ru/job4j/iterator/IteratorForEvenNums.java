@@ -2,7 +2,6 @@ package ru.job4j.iterator;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
 
 public class IteratorForEvenNums implements Iterator {
     private final int[] nums;
@@ -15,7 +14,13 @@ public class IteratorForEvenNums implements Iterator {
 
     @Override
     public boolean hasNext() {
-        return IntStream.of(nums).skip(index).anyMatch(el -> el % 2 == 0) && nums.length > index;
+        for(int i = index; i < nums.length; i++) {
+            if (nums[i] % 2 == 0) {
+                index = i;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -23,15 +28,6 @@ public class IteratorForEvenNums implements Iterator {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        int result = 0;
-        for (int i = index; i < nums.length; i++) {
-            if (nums[i] % 2 == 0) {
-                result = nums[i];
-                index = i;
-                break;
-            }
-        }
-        index++;
-        return result;
+        return nums[index++];
     }
 }
