@@ -1,9 +1,6 @@
 package ru.job4j.list;
 
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class SimplyArray<T> implements Iterable<T> {
     private Object[] container;
@@ -16,9 +13,7 @@ public class SimplyArray<T> implements Iterable<T> {
     }
 
     public T get(int index) {
-        if (index >= capacity || container[index] == null) {
-            throw new NoSuchElementException();
-        }
+        Objects.checkIndex(index, container.length - index);
         return (T) container[index];
     }
 
@@ -48,7 +43,7 @@ public class SimplyArray<T> implements Iterable<T> {
 
             @Override
             public T next() {
-                if (!hasNext() || container[index] == null) {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
                 if (expectedModCount != modCount) {
