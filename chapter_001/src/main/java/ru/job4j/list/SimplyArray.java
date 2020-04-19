@@ -13,8 +13,12 @@ public class SimplyArray<T> implements Iterable<T> {
     }
 
     public T get(int index) {
-        Objects.checkIndex(index, container.length - index);
-        return (T) container[index];
+        try {
+            Objects.checkIndex(index, container.length - index);
+            return (T) container[index];
+        } catch (IndexOutOfBoundsException ex) {
+            throw new NoSuchElementException();
+        }
     }
 
     public void add(T model) {
