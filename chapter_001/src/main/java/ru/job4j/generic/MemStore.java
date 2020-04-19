@@ -2,7 +2,6 @@ package ru.job4j.generic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
@@ -15,12 +14,12 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        if (findById(id) == null) {
+        int index = indexOf(id);
+        if (index == -1) {
             return false;
+        } else {
+            mem.set(index, model);
         }
-        T result = findById(id);
-        int index = mem.indexOf(result);
-        mem.set(index, model);
         return true;
     }
 
@@ -29,12 +28,22 @@ public final class MemStore<T extends Base> implements Store<T> {
         return mem.remove(findById(id));
     }
 
+    public int indexOf(String id) {
+        int rsl = -1;
+        int index = 0;
+        for (T el : mem) {
+            if (el.getId().equals(id)) {
+                rsl = index;
+            }
+            index++;
+        }
+        return rsl;
+    }
+
     @Override
     public T findById(String id) {
-        return mem.stream()
-                .flatMap(Stream::of)
-                .filter(model -> model.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        int index = indexOf(id);
+        return index != -1 ? mem.get(index) : null;
     }
+
 }
