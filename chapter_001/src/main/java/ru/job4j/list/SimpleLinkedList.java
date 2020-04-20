@@ -37,6 +37,23 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         throw new IndexOutOfBoundsException(index);
     }
 
+    public T deleteLast() {
+        Node<T> result;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        } else if (size == 1) {
+            result = last;
+            first = null;
+            last = null;
+        } else {
+            last.prev.next = null;
+            last = last.prev;
+            result = last;
+        }
+        size--;
+        return result.value;
+    }
+
     private static class Node<T> {
         T value;
         Node<T> next;
