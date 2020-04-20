@@ -4,7 +4,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class SimplyLinkedList<T> implements Iterable<T> {
+public class SimpleLinkedList<T> implements Iterable<T> {
     private Node<T> first;
     private Node<T> last;
     private int size = 0;

@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class SimplyArrayTest {
+public class SimpleArrayTest {
 
     @Test
     public void testArray() {

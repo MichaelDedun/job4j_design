@@ -9,11 +9,11 @@ import java.util.Iterator;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class SimplyLinkedListTest {
+public class SimpleLinkedListTest {
 
     @Test
     public void testAdd() {
-        SimplyLinkedList<Integer> linkedList = new SimplyLinkedList<>();
+        SimpleLinkedList<Integer> linkedList = new SimpleLinkedList<>();
         linkedList.add(1);
         linkedList.add(2);
         linkedList.add(3);
@@ -28,7 +28,7 @@ public class SimplyLinkedListTest {
 
     @Test(expected = ConcurrentModificationException.class)
     public void whenCorruptedIt() {
-        SimplyLinkedList<String> linkedList = new SimplyLinkedList<>();
+        SimpleLinkedList<String> linkedList = new SimpleLinkedList<>();
         linkedList.add("first");
         Iterator<String> it = linkedList.iterator();
         linkedList.add("second");
@@ -37,7 +37,7 @@ public class SimplyLinkedListTest {
 
     @Test
     public void testIterator() {
-        SimplyLinkedList<String> linkedList = new SimplyLinkedList<>();
+        SimpleLinkedList<String> linkedList = new SimpleLinkedList<>();
         linkedList.add("first");
         linkedList.add("second");
         linkedList.add("third");

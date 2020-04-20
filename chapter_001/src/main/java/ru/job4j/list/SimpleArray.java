@@ -2,13 +2,13 @@ package ru.job4j.list;
 
 import java.util.*;
 
-public class SimplyArray<T> implements Iterable<T> {
+public class SimpleArray<T> implements Iterable<T> {
     private Object[] container;
     private int capacity = 1;
     private int index = 0;
     private int modCount = 0;
 
-    public SimplyArray() {
+    public SimpleArray() {
         this.container = new Object[capacity];
     }
 
