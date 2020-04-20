@@ -46,13 +46,14 @@ public class SimpleLinkedList<T> implements Iterable<T> {
             first = null;
             last = null;
         } else {
-            last.prev.next = null;
-            last = last.prev;
             result = last;
+            last = last.prev;
+            last.next = null;
         }
         size--;
         return result.value;
     }
+
 
     private static class Node<T> {
         T value;

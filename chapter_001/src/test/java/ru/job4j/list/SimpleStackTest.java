@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.Test;
 
+import java.util.LinkedList;
+
 public class SimpleStackTest {
 
     @Test
@@ -31,5 +33,6 @@ public class SimpleStackTest {
         stack.poll();
         assertThat(stack.poll(), is(1));
     }
+    
 
 }
