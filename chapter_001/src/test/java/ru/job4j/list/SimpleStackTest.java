@@ -33,6 +33,6 @@ public class SimpleStackTest {
         stack.poll();
         assertThat(stack.poll(), is(1));
     }
-    
+
 
 }

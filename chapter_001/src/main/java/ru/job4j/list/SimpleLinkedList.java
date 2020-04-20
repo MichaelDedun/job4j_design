@@ -54,6 +54,22 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         return result.value;
     }
 
+    public T deleteFirst() {
+        Node<T> result;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        } else if (size == 1) {
+            result = first;
+            first = null;
+            last = null;
+        } else {
+            result = first;
+            first = first.next;
+            first.prev = null;
+        }
+        size--;
+        return result.value;
+    }
 
     private static class Node<T> {
         T value;
