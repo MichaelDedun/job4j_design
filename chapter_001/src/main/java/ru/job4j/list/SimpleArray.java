@@ -5,7 +5,7 @@ import java.util.*;
 public class SimpleArray<T> implements Iterable<T> {
     private Object[] container;
     private int capacity = 1;
-    private int index = 0;
+    private int position = 0;
     private int modCount = 0;
 
     public SimpleArray() {
@@ -14,7 +14,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public T get(int index) {
         try {
-            Objects.checkIndex(index, container.length - index);
+            Objects.checkIndex(index, position);
             return (T) container[index];
         } catch (IndexOutOfBoundsException ex) {
             throw new NoSuchElementException();
@@ -22,15 +22,15 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public void add(T model) {
-        if (index >= capacity) {
+        if (position >= capacity) {
             capacity = capacity * 2;
             container = Arrays.copyOf(container, capacity);
-            container[index++] = model;
-            modCount++;
+            container[position] = model;
         } else {
-            container[index++] = model;
-            modCount++;
+            container[position] = model;
         }
+        position++;
+        modCount++;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
             @Override
             public boolean hasNext() {
-                return container.length > index;
+                return position > index;
             }
 
             @Override
