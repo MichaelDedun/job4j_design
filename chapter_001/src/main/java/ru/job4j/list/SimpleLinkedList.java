@@ -54,6 +54,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
             last.next = null;
         }
         size--;
+        modCount++;
         return result.value;
     }
 
@@ -71,6 +72,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
             first.prev = null;
         }
         size--;
+        modCount++;
         return result.value;
     }
 
