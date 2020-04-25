@@ -11,4 +11,8 @@ public class SimpleStack<T> {
         lst.add(value);
     }
 
+    public boolean isEmpty() {
+       return lst.isEmpty();
+    }
+
 }

@@ -76,6 +76,10 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         return result.value;
     }
 
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
     private static class Node<T> {
         T value;
         Node<T> next;
