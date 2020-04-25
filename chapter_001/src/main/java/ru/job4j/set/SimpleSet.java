@@ -9,7 +9,7 @@ public class SimpleSet<T> implements Iterable<T> {
 
     public void add(T model) {
         for (T el : lst) {
-            if (el == model) {
+            if (el.equals(model)) {
                 return;
             }
         }
