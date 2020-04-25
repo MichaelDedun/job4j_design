@@ -29,12 +29,15 @@ public class SimpleLinkedList<T> implements Iterable<T> {
 
     public T get(int index) {
         Node<T> node = first;
+        if (index >= size) {
+            throw new IndexOutOfBoundsException(index);
+        }
         for (int i = 0; i < size; i++) {
             if (i == index)
                 return node.value;
             node = node.next;
         }
-        throw new IndexOutOfBoundsException(index);
+        return null;
     }
 
     public T deleteLast() {
