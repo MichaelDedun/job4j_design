@@ -16,8 +16,8 @@ public class SimpleArray<T> implements Iterable<T> {
         try {
             Objects.checkIndex(index, position);
             return (T) container[index];
-        } catch (IndexOutOfBoundsException ex) {
-            throw new NoSuchElementException();
+        } catch (Exception ex) {
+            throw new IndexOutOfBoundsException();
         }
     }
 
