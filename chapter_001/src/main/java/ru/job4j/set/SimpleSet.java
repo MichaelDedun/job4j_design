@@ -8,12 +8,9 @@ public class SimpleSet<T> implements Iterable<T> {
     private SimpleArray<T> lst = new SimpleArray<>();
 
     public void add(T model) {
-        for (T el : lst) {
-            if (el.equals(model)) {
-                return;
-            }
+        if (!lst.contains(model)) {
+            lst.add(model);
         }
-        lst.add(model);
     }
 
     @Override
