@@ -28,10 +28,8 @@ public class SimpleLinkedList<T> implements Iterable<T> {
     }
 
     public T get(int index) {
+        checkIndex(index);
         Node<T> node = first;
-        if (index >= size) {
-            throw new IndexOutOfBoundsException(index);
-        }
         for (int i = 0; i < size; i++) {
             if (i == index)
                 return node.value;
@@ -42,9 +40,8 @@ public class SimpleLinkedList<T> implements Iterable<T> {
 
     public T deleteLast() {
         Node<T> result;
-        if (size == 0) {
-            throw new NoSuchElementException();
-        } else if (size == 1) {
+        checkSize();
+        if (size == 1) {
             result = last;
             first = null;
             last = null;
@@ -60,9 +57,8 @@ public class SimpleLinkedList<T> implements Iterable<T> {
 
     public T deleteFirst() {
         Node<T> result;
-        if (size == 0) {
-            throw new NoSuchElementException();
-        } else if (size == 1) {
+        checkSize();
+        if (size == 1) {
             result = first;
             first = null;
             last = null;
@@ -78,6 +74,18 @@ public class SimpleLinkedList<T> implements Iterable<T> {
 
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    public void checkSize() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public void checkIndex(int index) {
+        if (index >= size) {
+            throw new IndexOutOfBoundsException(index);
+        }
     }
 
     private static class Node<T> {
