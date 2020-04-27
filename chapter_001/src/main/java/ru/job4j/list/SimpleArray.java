@@ -13,12 +13,10 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public T get(int index) {
-        try {
-            Objects.checkIndex(index, position);
-            return (T) container[index];
-        } catch (Exception ex) {
+        if(Objects.checkIndex(index, position) != index) {
             throw new IndexOutOfBoundsException();
         }
+        return (T) container[index];
     }
 
     public void add(T model) {
