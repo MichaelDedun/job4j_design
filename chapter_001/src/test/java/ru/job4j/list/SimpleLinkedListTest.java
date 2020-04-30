@@ -14,11 +14,11 @@ public class SimpleLinkedListTest {
     @Test
     public void testAdd() {
         SimpleLinkedList<Integer> linkedList = new SimpleLinkedList<>();
-        linkedList.add(1);
-        linkedList.add(2);
-        linkedList.add(3);
-        linkedList.add(4);
-        linkedList.add(5);
+        linkedList.addLast(1);
+        linkedList.addLast(2);
+        linkedList.addLast(3);
+        linkedList.addLast(4);
+        linkedList.addLast(5);
         Assert.assertEquals(1, (int) linkedList.get(0));
         Assert.assertEquals(2, (int) linkedList.get(1));
         Assert.assertEquals(3, (int) linkedList.get(2));
@@ -29,19 +29,19 @@ public class SimpleLinkedListTest {
     @Test(expected = ConcurrentModificationException.class)
     public void whenCorruptedIt() {
         SimpleLinkedList<String> linkedList = new SimpleLinkedList<>();
-        linkedList.add("first");
+        linkedList.addLast("first");
         Iterator<String> it = linkedList.iterator();
-        linkedList.add("second");
+        linkedList.addLast("second");
         it.next();
     }
 
     @Test
     public void testIterator() {
         SimpleLinkedList<String> linkedList = new SimpleLinkedList<>();
-        linkedList.add("first");
-        linkedList.add("second");
-        linkedList.add("third");
-        linkedList.add("fourth");
+        linkedList.addLast("first");
+        linkedList.addLast("second");
+        linkedList.addLast("third");
+        linkedList.addLast("fourth");
         Iterator<String> it = linkedList.iterator();
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is("first"));

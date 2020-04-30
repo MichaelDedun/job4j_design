@@ -3,73 +3,62 @@ package ru.job4j.list;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleLinkedList<T> implements Iterable<T> {
-    private Node<T> first;
-    private Node<T> last;
+    private Node<T> first = new Node<>();
+    private Node<T> last = new Node<>();
     private int size = 0;
     private int modCount = 0;
 
-    public void add(T value) {
-        if (first == null) {
-            first = new Node<>(value, null, null);
-            last = first;
-        } else if (first.next == null) {
-            Node<T> node = new Node<>(value, null, first);
-            first.next = node;
-            last = node;
-        } else {
-            Node<T> node = new Node<>(value, null, last);
-            last.next = node;
-            last = node;
+    public SimpleLinkedList() {
+        first.next = last;
+        last.prev = first;
+    }
+
+    public T get(int index) {
+        Objects.checkIndex(index,size);
+        Node<T> node = first.next;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
+        return node.value;
+    }
+
+    public void addLast(T value) {
+        Node<T> node = new Node<>(value);
+        node.next = last.prev.next;
+        last.prev.next = node;
+        last.prev = node;
         modCount++;
         size++;
     }
 
-    public T get(int index) {
-        checkIndex(index);
-        Node<T> node = first;
-        for (int i = 0; i < size; i++) {
-            if (i == index)
-                return node.value;
-            node = node.next;
-        }
-        return null;
-    }
-
     public T deleteLast() {
-        Node<T> result;
         checkSize();
-        if (size == 1) {
-            result = last;
-            first = null;
-            last = null;
-        } else {
-            result = last;
-            last = last.prev;
-            last.next = null;
-        }
+        T value = last.prev.value;
+        last.prev = last.prev.prev;
         size--;
         modCount++;
-        return result.value;
+        return value;
+    }
+
+    public void addFirst(T value) {
+        Node<T> node = new Node<>(value);
+        node.next = first.next;
+        first.next.prev = node;
+        first.next = node;
+        modCount++;
+        size++;
     }
 
     public T deleteFirst() {
-        Node<T> result;
         checkSize();
-        if (size == 1) {
-            result = first;
-            first = null;
-            last = null;
-        } else {
-            result = first;
-            first = first.next;
-            first.prev = null;
-        }
-        size--;
+        T value = first.next.value;
+        first.next = first.next.next;
         modCount++;
-        return result.value;
+        size--;
+        return value;
     }
 
     public boolean isEmpty() {
@@ -82,21 +71,16 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         }
     }
 
-    public void checkIndex(int index) {
-        if (index >= size) {
-            throw new IndexOutOfBoundsException(index);
-        }
-    }
-
     private static class Node<T> {
         T value;
         Node<T> next;
         Node<T> prev;
 
-        public Node(T value, Node<T> next, Node<T> prev) {
+        public Node() {
+        }
+
+        public Node(T value) {
             this.value = value;
-            this.next = next;
-            this.prev = prev;
         }
 
     }
@@ -106,7 +90,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         return new Iterator<T>() {
             private int expectedModCount = modCount;
             private int index = 0;
-            private Node<T> current = first;
+            private Node<T> current = first.next;
             Node<T> lastReturned;
 
             @Override
