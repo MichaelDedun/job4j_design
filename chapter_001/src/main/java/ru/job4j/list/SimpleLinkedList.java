@@ -38,8 +38,8 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         checkSize();
         T value = last.prev.value;
         last.prev = last.prev.prev;
-        size--;
         modCount++;
+        size--;
         return value;
     }
 
