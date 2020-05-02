@@ -1,12 +1,11 @@
 package ru.job4j.iterator;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 class Converter {
 
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
-        return new Iterator<Integer>() {
+        return new Iterator<>() {
             private Iterator<Iterator<Integer>> external = it;
             private Iterator<Integer> current = it.next();
 
