@@ -1,9 +1,10 @@
 package ru.job4j.map;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class SimpleMap<K, V> implements Iterable<V>{
+public class SimpleMap<K, V> implements Iterable<V> {
     private Object[] table;
     private int capacity = 16;
     private float loadFactor;
@@ -45,17 +46,7 @@ public class SimpleMap<K, V> implements Iterable<V>{
             return false;
         }
         if (threshold == size) {
-            capacity *= 2;
-            Object[] newTable = new Object[capacity];
-            for (Object el : table) {
-                if (el != null) {
-                    Node<K, V> node = (Node<K, V>) el;
-                    int newHash = hash(node.key);
-                    int newIndex = indexFor(newHash, capacity);
-                    newTable[newIndex] = el;
-                }
-            }
-            table = newTable;
+            table = expansionContainer();
         }
         Node<K, V> el = new Node<>(hash, key, value);
         table[index] = el;
@@ -84,6 +75,20 @@ public class SimpleMap<K, V> implements Iterable<V>{
         return hash & (length - 1);
     }
 
+    public Object[] expansionContainer() {
+        Object[] newTable = new Object[capacity];
+        capacity *= 2;
+        for (Object el : table) {
+            if (el != null) {
+                Node<K, V> node = (Node<K, V>) el;
+                int newHash = hash(node.key);
+                int newIndex = indexFor(newHash, capacity);
+                newTable[newIndex] = el;
+            }
+        }
+        return newTable;
+    }
+
     private static class Node<K, V> {
         int hash;
         K key;
@@ -94,26 +99,35 @@ public class SimpleMap<K, V> implements Iterable<V>{
             this.key = key;
             this.value = value;
         }
-
     }
 
     @Override
     public Iterator<V> iterator() {
         return new Iterator<V>() {
-            int counterArray = 0;
             int valuesCounter = 0;
             int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
-                return false;
+                return valuesCounter <= size;
             }
 
             @Override
             public V next() {
-                return null;
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                while (table[valuesCounter] == null) {
+                    valuesCounter++;
+                }
+                return ((Node<K, V>) table[valuesCounter]).value;
             }
+
         };
+
     }
 
 }
