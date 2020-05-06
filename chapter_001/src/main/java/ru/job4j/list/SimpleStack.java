@@ -8,7 +8,7 @@ public class SimpleStack<T> {
     }
 
     public void push(T value) {
-        lst.addLast(value);
+        lst.add(value);
     }
 
     public boolean isEmpty() {
