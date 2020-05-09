@@ -31,13 +31,21 @@ public class SimpleArray<T> implements Iterable<T> {
         modCount++;
     }
 
-    public boolean contains(T model) {
-            for (Object el : container) {
-                if (el == model) {
-                    return true;
-                }
-            }
-        return false;
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
+    public int indexOf(Object o) {
+        if (o == null) {
+            for (int i = 0; i < capacity; i++)
+                if (container[i]==null)
+                    return i;
+        } else {
+            for (int i = 0; i < capacity; i++)
+                if (o.equals(container[i]))
+                    return i;
+        }
+        return -1;
     }
 
     @Override
@@ -63,6 +71,12 @@ public class SimpleArray<T> implements Iterable<T> {
                 return (T) container[index++];
             }
         };
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
 }
