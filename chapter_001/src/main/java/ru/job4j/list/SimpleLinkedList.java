@@ -30,9 +30,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
     public T get(int index) {
         Node<T> node = first;
         checkIndex(index);
-        for (int i = 0; i < size; i++) {
-            if (i == index)
-                return node.value;
+        for (int i = 0; i < index; i++) {
             node = node.next;
         }
         return node.value;
@@ -56,7 +54,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
     }
 
     public void checkIndex(int index) {
-        if (index >= size) {
+        if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException(index);
         }
     }
