@@ -14,8 +14,7 @@ public class Analise {
             String end;
             for (String str : in.lines().collect(Collectors.toList())) {
                 if (!str.isEmpty()) {
-                    String state = str.substring(0, str.indexOf(" "));
-                    if (state.equals("400") || state.equals("500")) {
+                    if (str.contains("400") || str.contains("500")) {
                         if (start.isEmpty()) {
                             start = str.substring(str.indexOf(" ") + 1);
                         }
