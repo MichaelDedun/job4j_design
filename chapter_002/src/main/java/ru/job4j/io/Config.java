@@ -18,7 +18,7 @@ public class Config {
     public void load() {
         try (BufferedReader in = new BufferedReader(new FileReader(this.path))) {
             for (String str : in.lines().collect(Collectors.toList())) {
-                if (!str.startsWith("##") && !str.isEmpty()) {
+                if (!str.startsWith("#") && !str.isEmpty()) {
                     String[] keyAndValue = str.split("=");
                     values.put(keyAndValue[0], keyAndValue[1]);
                 }
