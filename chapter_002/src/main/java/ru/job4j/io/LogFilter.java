@@ -24,8 +24,7 @@ public class LogFilter {
         try (BufferedReader in = new BufferedReader(new FileReader(file))) {
             List<String> lines = new ArrayList<>();
             in.lines()
-                    .flatMap(s -> Arrays.stream(s.split("\n")))
-                    .filter(a -> a.split(" ")[a.split(" ").length - 2].equals("404"))
+                    .filter(a -> a.contains("404"))
                     .forEach(lines::add);
             return lines;
         } catch (Exception e) {
