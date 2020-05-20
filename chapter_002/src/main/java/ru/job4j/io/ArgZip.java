@@ -1,41 +1,87 @@
 package ru.job4j.io;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 public class ArgZip {
 
-    private Map<String, String> args = new HashMap<>();
+    private String directory;
+    private String exclude;
+    private String output;
 
-    public ArgZip(String[] args) {
-        this.args.put("d",args[1]);
-        this.args.put("e",args[3]);
-        this.args.put("O",args[5]);
+    public ArgZip(String[] args) throws FileNotFoundException {
+        valid(args);
+        this.directory = checkDirectory(args);
+        this.exclude = checkExclude(args);
+        this.output = checkOutput(args);
     }
 
-    public boolean valid() {
-        return false;
+    public void valid(String[] args) {
+        if (args.length == 0)
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
+
     }
 
     public String directory() {
-        return null;
+        return this.directory;
     }
 
     public String exclude() {
-        return null;
+        return this.exclude;
     }
 
     public String output() {
-        return null;
+        return this.output;
     }
 
-    public boolean checkDirectoryExist(String directory) {
-        Path dir = Paths.get(directory());
-        return Files.exists(dir);
+    public String checkDirectory(String[] args) throws FileNotFoundException {
+        if (!Arrays.toString(args).contains("-d")) {
+            throw new IllegalArgumentException("-d dont exist");
+        }
+        String directory = "";
+        ////Если -d находится не в нулевой позиции
+        for (int i = 0; i < args.length - 1; i++) {
+            if (args[i].equals("-d") && args[i+1].matches("^(.+)([^\\/]+)$")) {
+                directory = args[i + 1];
+                break;
+            }
+        }
+        if (!Files.exists(Paths.get(directory))) {
+            throw new FileNotFoundException("Catalog dont exist");
+        }
+        return directory;
+    }
+
+    public String checkExclude(String[] args) {
+        if (!Arrays.toString(args).contains("-e")) {
+            throw new IllegalArgumentException("-d dont exist");
+        }
+        String exclude = "";
+        ////Если -e находится не в нулевой позиции
+        for (int i = 0; i < args.length - 1; i++) {
+            if (args[i].equals("-e")) {
+                exclude = args[i + 1].replace("*","");
+                break;
+            }
+        }
+        return exclude;
+    }
+
+    public String checkOutput(String[] args) {
+        if (!Arrays.toString(args).contains("-o")) {
+            throw new IllegalArgumentException("-d dont exist");
+        }
+        String output = "";
+        ////Если -o находится не в нулевой позиции
+        for (int i = 0; i < args.length - 1; i++) {
+            if (args[i].equals("-o")) {
+                output = args[i + 1];
+                break;
+            }
+        }
+        return output;
     }
 
 }
