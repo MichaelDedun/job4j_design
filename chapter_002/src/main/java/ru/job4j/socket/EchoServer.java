@@ -22,9 +22,9 @@ public class EchoServer {
                         System.out.println(str);
                         if (str.contains("Bye")) {
                             try {
+                                out.write("server stopped\r\n\\".getBytes());
                                 server.close();
                                 System.out.println("server has been stopped");
-                                out.write("server stopped\r\n\\".getBytes());
                             } catch (SocketException ex) {
                                 ex.printStackTrace();
                             }
