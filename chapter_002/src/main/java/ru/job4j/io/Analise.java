@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.util.stream.Collectors;
 
 public class Analise {
 
@@ -12,7 +11,8 @@ public class Analise {
         try (BufferedReader in = new BufferedReader(new FileReader(source)); PrintWriter out = new PrintWriter(new FileOutputStream(target))) {
             String start = "";
             String end;
-            for (String str : in.lines().collect(Collectors.toList())) {
+            String str = "";
+            while ((str = in.readLine()) != null) {
                 if (!str.isEmpty()) {
                     if (str.contains("400") || str.contains("500")) {
                         if (start.isEmpty()) {
@@ -37,5 +37,5 @@ public class Analise {
         Analise analise = new Analise();
         analise.unavailable("server.log", "target.txt");
     }
-
+    
 }
