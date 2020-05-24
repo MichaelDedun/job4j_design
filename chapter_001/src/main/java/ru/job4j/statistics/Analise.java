@@ -1,7 +1,6 @@
 package ru.job4j.statistics;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Analise {
 
@@ -10,22 +9,19 @@ public class Analise {
         int added = 0;
         int changed = 0;
         int deleted = 0;
-        previous.sort(compById);
-        current.sort(compById);
+        Map<Integer, User> users = new HashMap<>();
+        for (User user : previous) {
+            users.put(user.id, user);
+        }
         for (User user : current) {
-            int i = 0;
-            while (i < previous.size() - 1 && previous.get(i).id < user.id) i++;
-            if (i == previous.size() - 1) {
-                added++;
-            } else if (user.id == previous.get(i).id && !previous.get(i).name.equals(user.name)) {
+            if (users.containsKey(user.id) && !users.get(user.id).equals(user))
                 changed++;
-            } else {
+            else if (!users.containsKey(user.id))
+                added++;
+            else
                 deleted++;
-            }
-
         }
         return new Info(added, changed, deleted);
-
     }
 
     public static class User {
@@ -36,6 +32,21 @@ public class Analise {
             this.id = id;
             this.name = name;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            User user = (User) o;
+            return id == user.id &&
+                    Objects.equals(name, user.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name);
+        }
+
     }
 
     Comparator<User> compById = Comparator.comparingInt(left -> left.id);
