@@ -37,5 +37,5 @@ public class Analise {
         Analise analise = new Analise();
         analise.unavailable("server.log", "target.txt");
     }
-    
+
 }
