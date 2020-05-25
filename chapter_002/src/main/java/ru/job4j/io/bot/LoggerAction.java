@@ -4,4 +4,6 @@ public interface LoggerAction {
 
     void logByType(UsersType userType, String message);
 
+    void saveLog();
+
 }

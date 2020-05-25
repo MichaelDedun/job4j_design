@@ -4,6 +4,8 @@ public interface BotAction {
 
     void run(Input input, boolean stopFlag);
 
-    String getAnswerFromFile();
+    void saveAnswers();
+
+    String getAnswer();
 
 }

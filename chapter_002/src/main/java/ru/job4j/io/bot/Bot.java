@@ -1,6 +1,8 @@
 package ru.job4j.io.bot;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bot implements BotAction {
     private final String endPhrase;
@@ -9,6 +11,7 @@ public class Bot implements BotAction {
     private final String stopChatting;
     private final String logFile;
     private final String answerFile;
+    private List<String> answers = new ArrayList<>();
 
     public Bot(String endPhrase, Logger logger, String continueChatting, String stopChatting, String logFile, String answerFile) {
         this.endPhrase = endPhrase;
@@ -21,7 +24,8 @@ public class Bot implements BotAction {
 
     @Override
     public void run(Input input, boolean stopFlag) {
-        String action = "";
+        saveAnswers();
+        String action;
         try (PrintWriter writer = new PrintWriter(new FileWriter(logFile))) {
             logger.setOut(writer);
             do {
@@ -32,36 +36,29 @@ public class Bot implements BotAction {
                 if (action.equalsIgnoreCase(stopChatting))
                     stopFlag = true;
                 if (!stopFlag && !action.equalsIgnoreCase(endPhrase)) {
-                    String answer = getAnswerFromFile();
+                    String answer = getAnswer();
                     logger.logByType(UsersType.BOT, answer);
                     System.out.println(answer);
                 }
             } while (!action.equalsIgnoreCase(endPhrase));
+            logger.saveLog();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public String getAnswerFromFile() {
-        String result = null;
-        try (RandomAccessFile in = new RandomAccessFile(answerFile, "r")) {
-            int countStr = 0;
-            while (null != in.readLine()) {
-                countStr++;
-            }
-            in.seek(0);
-            int numberStr = (int) (Math.random() * countStr) + 1;
-            int index = 0;
-            while (index != numberStr) {
-                result = in.readLine();
-                index++;
-            }
+    public void saveAnswers() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(answerFile))) {
+            reader.lines().forEach(answers::add);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
     }
 
+    public String getAnswer() {
+        int index = (int) (Math.random() * (answers.size()));
+        return answers.get(index);
+    }
 
 }
