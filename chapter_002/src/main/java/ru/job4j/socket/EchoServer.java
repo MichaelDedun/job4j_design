@@ -12,7 +12,8 @@ public class EchoServer {
 
     public static void main(String[] args) throws IOException {
         try (ServerSocket server = new ServerSocket(9000)) {
-            while (true) {
+            boolean runServer = true;
+            while (runServer) {
                 Socket socket = server.accept();
                 try (OutputStream out = socket.getOutputStream();
                      BufferedReader in = new BufferedReader(
@@ -21,13 +22,9 @@ public class EchoServer {
                     while (!(str = in.readLine()).isEmpty()) {
                         System.out.println(str);
                         if (str.contains("Bye")) {
-                            try {
-                                out.write("server stopped\r\n\\".getBytes());
-                                server.close();
-                                System.out.println("server has been stopped");
-                            } catch (SocketException ex) {
-                                ex.printStackTrace();
-                            }
+                            System.out.println("server has been stopped");
+                            out.write("server has been stopped\r\n\\".getBytes());
+                            runServer = false;
                         }
                     }
                     if (!server.isClosed()) {
