@@ -1,16 +1,20 @@
 package ru.job4j.socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.job4j.log.UsageLog4j;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class EchoServer {
 
-    public static void main(String[] args) throws IOException {
+    private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             boolean runServer = true;
             while (runServer) {
@@ -23,7 +27,7 @@ public class EchoServer {
                     while (!(str = in.readLine()).isEmpty()) {
                         str = str.toLowerCase();
                         if (str.contains("hello") || str.contains("exit") || str.contains("what")) {
-                            msg = str.substring(str.indexOf("=") + 1, str.indexOf("http")- 2);
+                            msg = str.substring(str.indexOf("=") + 1, str.indexOf("http") - 2);
                             switch (msg.toLowerCase()) {
                                 case "hello":
                                     msg = "Hello, dear friend !";
@@ -45,6 +49,9 @@ public class EchoServer {
                     out.write(msg.getBytes());
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error(e.getMessage());
         }
     }
 
