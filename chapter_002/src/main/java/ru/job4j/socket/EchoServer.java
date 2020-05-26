@@ -19,17 +19,30 @@ public class EchoServer {
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     String str;
+                    String msg = "";
                     while (!(str = in.readLine()).isEmpty()) {
-                        System.out.println(str);
-                        if (str.contains("Bye")) {
-                            System.out.println("server has been stopped");
-                            out.write("server has been stopped\r\n\\".getBytes());
-                            runServer = false;
+                        str = str.toLowerCase();
+                        if (str.contains("hello") || str.contains("exit") || str.contains("what")) {
+                            msg = str.substring(str.indexOf("=") + 1, str.indexOf("http")- 2);
+                            switch (msg.toLowerCase()) {
+                                case "hello":
+                                    msg = "Hello, dear friend !";
+                                    break;
+                                case "what":
+                                    msg = "What?";
+                                    break;
+                                case "exit":
+                                    msg = "See you soon ...";
+                                    runServer = false;
+                                    break;
+                            }
+                        } else {
+                            msg = str;
                         }
+                        break;
                     }
-                    if (!server.isClosed()) {
-                        out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
-                    }
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    out.write(msg.getBytes());
                 }
             }
         }
