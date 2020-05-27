@@ -32,9 +32,6 @@ public class EchoServer {
                                 case "hello":
                                     msg = "Hello, dear friend !";
                                     break;
-                                case "what":
-                                    msg = "What?";
-                                    break;
                                 case "exit":
                                     msg = "See you soon ...";
                                     runServer = false;
