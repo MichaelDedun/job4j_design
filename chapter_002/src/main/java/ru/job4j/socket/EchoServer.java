@@ -26,7 +26,7 @@ public class EchoServer {
                     String msg = "";
                     while (!(str = in.readLine()).isEmpty()) {
                         str = str.toLowerCase();
-                        if (str.contains("hello") || str.contains("exit") || str.contains("what")) {
+                        if (str.contains("hello") || str.contains("exit")) {
                             msg = str.substring(str.indexOf("=") + 1, str.indexOf("http") - 2);
                             switch (msg.toLowerCase()) {
                                 case "hello":
