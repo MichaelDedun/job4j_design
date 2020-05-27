@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Analise {
 
-
     public static Info diff(List<User> previous, List<User> current) {
         int added = 0;
         int changed = 0;
