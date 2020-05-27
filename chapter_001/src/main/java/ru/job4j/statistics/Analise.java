@@ -5,10 +5,10 @@ import java.util.*;
 public class Analise {
 
 
-    public Info diff(List<User> previous, List<User> current) {
+    public static Info diff(List<User> previous, List<User> current) {
         int added = 0;
         int changed = 0;
-        int deleted = 0;
+        int deleted;
         Map<Integer, User> users = new HashMap<>();
         for (User user : previous) {
             users.put(user.id, user);
@@ -18,9 +18,8 @@ public class Analise {
                 changed++;
             else if (!users.containsKey(user.id))
                 added++;
-            else
-                deleted++;
         }
+        deleted = previous.size() - (current.size() - added);
         return new Info(added, changed, deleted);
     }
 
