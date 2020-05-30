@@ -45,8 +45,8 @@ public class SimpleLinkedList<T> implements Iterable<T> {
             last = null;
         } else {
             last.prev.next = null;
-            last = last.prev;
             result = last;
+            last = last.prev;
         }
         size--;
         modCount++;
