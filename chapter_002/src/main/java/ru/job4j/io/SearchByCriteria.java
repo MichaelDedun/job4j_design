@@ -12,21 +12,23 @@ public class SearchByCriteria {
 
 
     public static void main(String[] args) throws IOException {
+        Context context = new Context();
         ArgsSearch argsSearch = new ArgsSearch(args);
         List<Path> result = new ArrayList<>();
         switch (argsSearch.searchTemplate()) {
             case "-m":
-                result = Search.searchByMask(Paths.get(argsSearch.directory()), argsSearch.filesForSearch());
+                context.setSearcher(new MaskSearcher());
                 break;
             case "-f":
-                result = Search.searchByFullName(Paths.get(argsSearch.directory()), argsSearch.filesForSearch());
+                context.setSearcher(new FullNameSearcher());
                 break;
             case "-r":
-                result = Search.searchByRegexp(Paths.get(argsSearch.directory()), argsSearch.filesForSearch());
+                context.setSearcher(new RegexpSearcher());
             default:
                 break;
         }
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(argsSearch.output()))) {
+        result = context.executeSearcher(Paths.get(argsSearch.directory()), argsSearch.files());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(argsSearch.output()))) {
             if (result.size() != 0) {
                 for (Path path : result) {
                     writer.write(path + System.lineSeparator());

@@ -8,17 +8,17 @@ import java.util.Arrays;
 public class ArgsSearch {
 
     private String directory;
-    private String filesForSearch;
+    private String files;
     private String searchTemplate;
     private String output;
 
     public ArgsSearch(String[] args) throws FileNotFoundException {
         valid(args);
         this.directory = checkDirectory(args);
-        this.filesForSearch = checkFiles(args);
+        this.files = checkFiles(args);
         switch (args[4]) {
             case "-m":
-                searchTemplate = checkMask(args[4], filesForSearch);
+                searchTemplate = checkMask(args[4], files);
                 break;
             case "-f":
                 searchTemplate = checkFullName(args[4]);
@@ -42,8 +42,8 @@ public class ArgsSearch {
         return this.directory;
     }
 
-    public String filesForSearch() {
-        return this.filesForSearch;
+    public String files() {
+        return this.files;
     }
 
     public String searchTemplate() {
@@ -59,7 +59,6 @@ public class ArgsSearch {
             throw new IllegalArgumentException("-d dont exist");
         }
         String directory = "";
-        ////Если -d находится не в нулевой позиции
         for (int i = 0; i < args.length - 1; i++) {
             if (args[i].equals("-d") && args[i + 1].matches("^(.+)([^\\/]+)$")) {
                 directory = args[i + 1];
@@ -77,7 +76,6 @@ public class ArgsSearch {
             throw new IllegalArgumentException("-d dont exist");
         }
         String filesForSearch = "";
-        ////Если -n находится не в нулевой позиции
         for (int i = 0; i < args.length - 1; i++) {
             if (args[i].equals("-n")) {
                 filesForSearch = args[i + 1];
@@ -91,20 +89,20 @@ public class ArgsSearch {
         if (!mask.equals("-m")) {
             throw new IllegalArgumentException("-m not exist");
         }
-        this.filesForSearch = filesForSearch.replace("*", "");
+        this.files = filesForSearch.replace("*", "");
         return mask;
     }
 
     public String checkFullName(String fullName) {
         if (!fullName.equals("-f")) {
-            throw new IllegalArgumentException("-m not exist");
+            throw new IllegalArgumentException("-f not exist");
         }
         return fullName;
     }
 
     public String checkRegexp(String regexp) {
         if (!regexp.equals("-r")) {
-            throw new IllegalArgumentException("-m not exist");
+            throw new IllegalArgumentException("-r not exist");
         }
         return regexp;
     }
@@ -114,7 +112,6 @@ public class ArgsSearch {
             throw new IllegalArgumentException("-d dont exist");
         }
         String output = "";
-        ////Если -o находится не в нулевой позиции
         for (int i = 0; i < args.length - 1; i++) {
             if (args[i].equals("-o")) {
                 output = args[i + 1];

@@ -21,22 +21,4 @@ public class Search {
         return searcher.getListPaths();
     }
 
-    public static List<Path> searchByMask(Path root, String ext) throws IOException {
-        SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().endsWith(ext));
-        Files.walkFileTree(root, searcher);
-        return searcher.getListPaths();
-    }
-
-    public static List<Path> searchByFullName(Path root, String ext) throws IOException {
-        SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().equals(ext));
-        Files.walkFileTree(root, searcher);
-        return searcher.getListPaths();
-    }
-
-    public static List<Path> searchByRegexp(Path root, String ext) throws IOException {
-        SearchFiles searcher = new SearchFiles(p -> p.toFile().getName().matches(ext));
-        Files.walkFileTree(root, searcher);
-        return searcher.getListPaths();
-    }
-
 }
