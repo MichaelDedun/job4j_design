@@ -64,5 +64,5 @@ FROM meetings m
 -- Нужно получить все совещания, где не было ни одной заявки на посещения
 select m.name
 FROM meetings as m
-         inner join accepted a on m.id = a.meeting_id
+         left join accepted a on m.id = a.meeting_id
 where a.meeting_id ISNULL;
