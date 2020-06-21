@@ -4,56 +4,65 @@ CREATE TABLE users
     name VARCHAR(30)
 );
 
-CREATE TABLE meeting
+CREATE TABLE meetings
 (
-    id      SERIAL PRIMARY KEY,
-    name    VARCHAR(30),
-    user_id INT4 REFERENCES "users" (id)
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(30)
 );
 
-CREATE TYPE meeting_status AS ENUM ('ACCEPTED', 'REFUSED');
+CREATE TYPE status AS ENUM ('ACCEPTED', 'REFUSED');
 
-CREATE TABLE status
+CREATE TABLE meetings_users
 (
-    id             SERIAL PRIMARY KEY,
-    current_status meeting_status not null,
-    user_id        INT4 REFERENCES "users" (id)
+    user_id     INT4 REFERENCES users (id),
+    meeting_id  INT4 REFERENCES meetings (id),
+    user_status status NOT NULL,
+    PRIMARY KEY (meeting_id, user_id)
 );
 
+insert into users(name)
+VALUES ('Michael');
 insert into users(name)
 VALUES ('Danon');
-
 insert into users(name)
-VALUES ('Misha');
-
+VALUES ('Dima');
 insert into users(name)
 VALUES ('Vova');
 
-insert into meeting(name, user_id)
-VALUES ('exam', 1);
-insert into meeting(name, user_id)
-VALUES ('vibori', 2);
-insert into meeting(name, user_id)
-VALUES ('svadba', 3);
-insert into meeting(name)
-VALUES ('kino');
-insert into meeting(name)
-VALUES ('teatr');
+insert into meetings(name)
+VALUES ('theater');
+insert into meetings(name)
+VALUES ('kfc');
+insert into meetings(name)
+VALUES ('movie');
+insert into meetings(name)
+VALUES ('poker');
 
-insert into status (current_status, user_id)
-VALUES ('ACCEPTED', 1);
-insert into status (current_status, user_id)
-VALUES ('ACCEPTED', 2);
-insert into status (current_status, user_id)
-VALUES ('ACCEPTED', 3);
+insert into meetings_users(user_id, meeting_id, user_status)
+VALUES (1, 1, 'ACCEPTED');
+insert into meetings_users(user_id, meeting_id, user_status)
+VALUES (2, 2, 'ACCEPTED');
+insert into meetings_users(user_id, meeting_id, user_status)
+VALUES (2, 1, 'REFUSED');
+insert into meetings_users(user_id, meeting_id, user_status)
+VALUES (2, 4, 'REFUSED');
 
 --Нужно написать запрос, который получит список всех заяков и количество подтвердивших участников.
 
-select count(*) as meet, count(s.user_id) as accepted
-from meeting as m
-         join status s on m.user_id = s.user_id
-where s.current_status = 'ACCEPTED';
+--Для подсчета количества подтвердивших участников
+CREATE VIEW accepted as
+SELECT meeting_id, count(*) as count
+FROM meetings_users
+WHERE user_status = 'ACCEPTED'
+GROUP BY meeting_id;
 
---Нужно получить все совещания, где не было ни одной заявки на посещения
+SELECT m.name, COALESCE(a.count, 0) as acc_num
+FROM meetings m
+         LEFT JOIN accepted a
+                   ON m.id = a.meeting_id;
 
-select *  from meeting as m where m.user_id IS NULL ;
+-- Нужно получить все совещания, где не было ни одной заявки на посещения
+select m.name
+FROM meetings as m
+         inner join accepted a on m.id = a.meeting_id
+where a.meeting_id ISNULL;
