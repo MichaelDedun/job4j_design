@@ -7,25 +7,25 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleCache<K> {
+public class SimpleCache {
     private final String src;
-    private Map<K, SoftReference<String>> map = new HashMap<>();
+    private Map<String, SoftReference<String>> map = new HashMap<>();
 
     public SimpleCache(String src) {
         this.src = src;
     }
 
-    public String get(K key) {
+    public String get(String key) {
         if (!map.containsKey(key)) {
             put(key);
-        } else if (map.get(key) == null) {
+        } else if (map.get(key).get() == null) {
             put(key);
         }
         return map.get(key).get();
     }
 
-    public void put(K key) {
-        map.put(key, new SoftReference<>(readValue((String) key)));
+    public void put(String key) {
+        map.put(key, new SoftReference<>(readValue(key)));
     }
 
     public String readValue(String value) {
