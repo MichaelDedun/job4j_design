@@ -19,16 +19,15 @@ public class SimpleCache {
     public String get(String key) {
         String val;
         if (!map.containsKey(key)) {
-            put(key);
-            val = checkVal(key);
+            val = put(key);
         } else {
             val = checkVal(key);
         }
         return val;
     }
 
-    public void put(String key) {
-        map.put(key, new SoftReference<>(readValue(key)));
+    public String put(String key) {
+        return Objects.requireNonNull(map.put(key, new SoftReference<>(readValue(key)))).get();
     }
 
     private String readValue(String value) {
@@ -58,7 +57,7 @@ public class SimpleCache {
     private String checkVal(String key) {
         String val = map.get(key).get();
         if (val == null) {
-            val = Objects.requireNonNull(map.put(key, new SoftReference<>(readValue(key)))).get();
+            val = put(key);
         }
         return val;
     }
