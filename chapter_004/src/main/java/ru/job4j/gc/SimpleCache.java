@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SimpleCache {
     private final String src;
@@ -16,19 +17,21 @@ public class SimpleCache {
     }
 
     public String get(String key) {
+        String val;
         if (!map.containsKey(key)) {
             put(key);
-        } else if (map.get(key).get() == null) {
-            put(key);
+            val = checkVal(key);
+        } else {
+            val = checkVal(key);
         }
-        return map.get(key).get();
+        return val;
     }
 
     public void put(String key) {
         map.put(key, new SoftReference<>(readValue(key)));
     }
 
-    public String readValue(String value) {
+    private String readValue(String value) {
         StringBuilder res = new StringBuilder();
         if (src.isEmpty()) {
             try (BufferedReader out = new BufferedReader(new FileReader(value))) {
@@ -50,6 +53,14 @@ public class SimpleCache {
             }
         }
         return res.toString();
+    }
+
+    private String checkVal(String key) {
+        String val = map.get(key).get();
+        if (val == null) {
+            val = Objects.requireNonNull(map.put(key, new SoftReference<>(readValue(key)))).get();
+        }
+        return val;
     }
 
 }
