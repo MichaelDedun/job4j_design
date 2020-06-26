@@ -2,10 +2,10 @@ package ru.job4j.srp.type;
 
 import ru.job4j.srp.model.Employe;
 
-import java.util.function.Predicate;
+import java.util.List;
 
 public interface TypeCreator {
 
-    String createByType(Predicate<Employe> filter, String type);
+    String createByType(List<Employe> employes, String type);
 
 }

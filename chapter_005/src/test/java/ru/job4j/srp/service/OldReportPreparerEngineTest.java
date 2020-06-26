@@ -9,7 +9,7 @@ import ru.job4j.srp.store.MemStore;
 
 import java.util.Calendar;
 
-public class OldReportEngineTest {
+public class OldReportPreparerEngineTest {
 
     @Test
     public void whenGenerated() {

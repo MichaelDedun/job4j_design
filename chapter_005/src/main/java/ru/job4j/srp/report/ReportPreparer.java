@@ -5,8 +5,8 @@ import ru.job4j.srp.store.Store;
 
 import java.util.function.Predicate;
 
-public interface Report {
+public interface ReportPreparer {
 
-    String create(Predicate<Employe> filter, String type, Store store);
+    String prepare(Predicate<Employe> filter, String type, Store store);
 
 }

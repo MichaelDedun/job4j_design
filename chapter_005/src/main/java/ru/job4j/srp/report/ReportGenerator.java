@@ -7,6 +7,6 @@ import java.util.function.Predicate;
 
 public interface ReportGenerator {
 
-    String generate(String format, Predicate<Employe> filter, String type, Store store);
+    String generate(String department, Predicate<Employe> filter, String type, Store store);
 
 }

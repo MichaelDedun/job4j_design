@@ -1,31 +1,25 @@
 package ru.job4j.srp.type;
 
 import ru.job4j.srp.model.Employe;
-import ru.job4j.srp.store.Store;
 
-import java.util.function.Predicate;
+import java.util.List;
 
 public class ReportForIt implements TypeCreator {
-    private Store store;
 
-    public ReportForIt(Store store) {
-        this.store = store;
-    }
-
-    public String createByType(Predicate<Employe> filter, String type) {
+    public String createByType(List<Employe> employes, String type) {
         switch (type.toLowerCase()) {
             case "html":
-                return HtmlReport(filter);
+                return htmlReport(employes);
             case "json":
-                return JsonReport(filter);
+                return jsonReport(employes);
             case "xml":
-                return XmlReport(filter);
+                return xmlReport(employes);
             default:
                 return null;
         }
     }
 
-    private String HtmlReport(Predicate<Employe> filter) {
+    private String htmlReport(List<Employe> employes) {
         StringBuilder result = new StringBuilder();
         result.append("<html>").append(System.lineSeparator())
                 .append("<head>").append(System.lineSeparator())
@@ -39,7 +33,7 @@ public class ReportForIt implements TypeCreator {
                 .append("<th>").append("Fired").append("</th>").append(System.lineSeparator())
                 .append("<th>").append("Salary").append("</th>").append(System.lineSeparator())
                 .append("</tr>").append(System.lineSeparator());
-        for (Employe employe : store.findBy(filter)) {
+        for (Employe employe : employes) {
             result.append("<tr>").append(System.lineSeparator())
                     .append("<td>").append(employe.getName()).append("</td>").append(System.lineSeparator())
                     .append("<td>").append(employe.getHired().getTime()).append("</td>").append(System.lineSeparator())
@@ -53,11 +47,11 @@ public class ReportForIt implements TypeCreator {
         return result.toString();
     }
 
-    private String XmlReport(Predicate<Employe> filter) {
+    private String xmlReport(List<Employe> employes) {
         StringBuilder result = new StringBuilder()
                 .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>").append(System.lineSeparator())
                 .append("<employers>").append(System.lineSeparator());
-        for (Employe employe : store.findBy(filter)) {
+        for (Employe employe : employes) {
             result.append("<employer>").append(System.lineSeparator())
                     .append("<name>").append(employe.getName()).append("</name>").append(System.lineSeparator())
                     .append("<hired>").append(employe.getHired().getTime()).append("</hired>").append(System.lineSeparator())
@@ -69,9 +63,9 @@ public class ReportForIt implements TypeCreator {
         return result.toString();
     }
 
-    private String JsonReport(Predicate<Employe> filter) {
+    private String jsonReport(List<Employe> employes) {
         StringBuilder text = new StringBuilder();
-        for (Employe employe : store.findBy(filter)) {
+        for (Employe employe : employes) {
             text.append("{").append(System.lineSeparator())
                     .append("\"name\": ").append("\"").append(employe.getName()).append("\",").append(System.lineSeparator())
                     .append("\"hired\": ").append(employe.getHired().getTime()).append(",").append(System.lineSeparator())

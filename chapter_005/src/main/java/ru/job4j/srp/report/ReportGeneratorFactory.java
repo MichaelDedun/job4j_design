@@ -10,18 +10,18 @@ import java.util.function.Predicate;
 
 public class ReportGeneratorFactory implements ReportGenerator {
 
-
     @Override
-    public String generate(String format, Predicate<Employe> filter, String type, Store store) {
-        switch (format.toLowerCase()) {
+    public String generate(String department, Predicate<Employe> filter, String type, Store store) {
+        switch (department.toLowerCase()) {
             case "it":
-                return new ItDepartment().create(filter, type, store);
+                return new ItDepartment().prepare(filter, type, store);
             case "acc":
-                return new AccountancyDepartment().create(filter, type, store);
+                return new AccountancyDepartment().prepare(filter, type, store);
             case "hr":
-                return new HrDepartment().create(filter, type, store);
+                return new HrDepartment().prepare(filter, type, store);
             default:
                 return null;
         }
     }
+
 }

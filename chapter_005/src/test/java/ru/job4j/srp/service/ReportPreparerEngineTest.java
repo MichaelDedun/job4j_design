@@ -10,7 +10,7 @@ import java.util.Calendar;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-public class ReportEngineTest {
+public class ReportPreparerEngineTest {
 
     @Test
     public void whenItGeneratedHtml() {
@@ -115,7 +115,7 @@ public class ReportEngineTest {
         String expect = worker.getName() + ";" +
                 worker.getHired() + ";" +
                 worker.getFired() + ";" +
-                worker.getSalary() * 69.27 + ";";
+                worker.getSalary() / 69.27 + ";";
         assertEquals(factory.generate("acc", employer -> employer.getHired().equals(now), "dollar", store), expect);
     }
 
