@@ -21,7 +21,6 @@ public class ArgZip {
     public void valid(String[] args) {
         if (args.length == 0)
             throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
-
     }
 
     public String directory() {
