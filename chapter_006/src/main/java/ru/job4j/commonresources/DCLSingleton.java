@@ -16,5 +16,5 @@ public final class DCLSingleton {
         }
         return inst;
     }
-    
+
 }
