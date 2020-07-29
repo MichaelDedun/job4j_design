@@ -12,5 +12,13 @@
     <artifactId>chapter_006</artifactId>
     <version>3.0</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
 
 </project>
