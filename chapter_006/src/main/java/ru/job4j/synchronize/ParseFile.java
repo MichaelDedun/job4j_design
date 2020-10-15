@@ -5,9 +5,11 @@ import java.io.*;
 public class ParseFile {
     private File file;
     private String content;
+    private SaveFile saveFile;
 
-    public ParseFile(File f) throws IOException {
+    public ParseFile(File f, SaveFile saveFile) throws IOException {
         file = f;
+        this.saveFile = saveFile;
         content = initContent();
     }
 
@@ -19,7 +21,7 @@ public class ParseFile {
         return content;
     }
 
-    public synchronized String initContent() {
+    private synchronized String initContent() {
         try (BufferedReader i = new BufferedReader(new FileReader(file))) {
             StringBuilder output = new StringBuilder();
             int data;
@@ -49,14 +51,8 @@ public class ParseFile {
         return null;
     }
 
-    public synchronized void saveContent(String content) {
-        try (BufferedWriter o = new BufferedWriter(new FileWriter(file))) {
-            for (int i = 0; i < content.length(); i += 1) {
-                o.write(content.charAt(i));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public synchronized void saveContent(String content, File file) {
+        saveFile.saveContent(content, file);
     }
 
 }
